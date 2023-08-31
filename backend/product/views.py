@@ -5,6 +5,8 @@ from product.serializers import ProductSerializer
 from rest_framework.decorators import  api_view
 from rest_framework.response import Response
 
+from .permission import IsStaffEditorPermission
+
 class ProductCreateAPIView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -23,7 +25,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = permissions.IsAdminUser , [IsStaffEditorPermission]
     
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
