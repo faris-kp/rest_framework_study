@@ -4,7 +4,7 @@ from product.models import Product
 from product.serializers import ProductSerializer
 from rest_framework.decorators import  api_view
 from rest_framework.response import Response
-
+from api.authentication import TokenAuthentication
 from .permission import IsStaffEditorPermission
 
 class ProductCreateAPIView(generics.CreateAPIView):
@@ -24,8 +24,9 @@ class ProductCreateAPIView(generics.CreateAPIView):
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = permissions.IsAdminUser , [IsStaffEditorPermission]
+    authentication_classes = [authentication.SessionAuthentication,
+                              TokenAuthentication]
+    permission_classes =[ permissions.IsAdminUser , IsStaffEditorPermission]
     
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
