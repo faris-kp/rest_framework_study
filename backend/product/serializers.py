@@ -15,9 +15,6 @@ class ProductInlineSerializer(serializers.Serializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     owner = UserPublicSerializer(source='user',read_only =True)
-    related_product = ProductInlineSerializer(source='user.product_set.all',read_only =True,many= True)
-    my_user_data =serializers.SerializerMethodField(read_only=True)
-    my_discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
         view_name='product-detail',
@@ -26,23 +23,18 @@ class ProductSerializer(serializers.ModelSerializer):
     title = serializers.CharField(validators = [validators.validate_title_no_hello,validators.unique_product_title])
     # name = serializers.CharField(source = 'title',read_only = True)
     
-    email = serializers.EmailField(source='user.email',read_only = True)
+    # email = serializers.EmailField(source='user.email',read_only = True)
     class Meta:
         model = Product
         fields = [
             'owner',
-            'email',
             'url',
             'edit_url',
             'pk',
-            # 'name',
             'title',
             'content',
             'price',
             'sale_price',
-            'my_discount',
-            'my_user_data', 
-            'related_product',
         ]
     def get_my_user_data(self, obj):
         return {
@@ -73,9 +65,10 @@ class ProductSerializer(serializers.ModelSerializer):
             return None
         return reverse("product-edit",kwargs={"pk":obj.pk},request=request)
         # return f"/api/product/{obj.id}/"
-    def get_my_discount(self,obj):
-        if not hasattr(obj,'id'):
-            return None
-        if not isinstance(obj,Product):
-            return None
-        return obj.get_discount()
+        
+    # def get_my_discount(self,obj):
+    #     if not hasattr(obj,'id'):
+    #         return None
+    #     if not isinstance(obj,Product):
+    #         return None
+    #     return obj.get_discount()
