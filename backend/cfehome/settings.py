@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'algoliasearch_django',
     'rest_framework',
     'rest_framework.authtoken',
     'api',
@@ -133,4 +134,9 @@ REST_FRAMEWORK = {
   "DEFAULT_PERMISSION_CLASSES":["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
   "DEFAULT_PAGINATION_CLASS":"rest_framework.pagination.LimitOffsetPagination",
   "PAGE_SIZE" : 10 ,
+}
+
+
+ALGOLIA = {
+   
 }
